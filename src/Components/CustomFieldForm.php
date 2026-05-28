@@ -5,12 +5,12 @@ namespace Yezper\LaravelCustomFieldsFilament\Components;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Model;
@@ -43,7 +43,7 @@ class CustomFieldForm
         foreach ($definitions as $definition) {
             $field = self::componentFor($definition);
 
-            if ($record === null && $definition->default_value !== null) {
+            if ($record === null && $definition->default_value !== null && method_exists($field, 'default')) {
                 $field->default($definition->default_value);
             }
 
@@ -97,10 +97,14 @@ class CustomFieldForm
         return $output;
     }
 
-    public static function componentFor(CustomFieldDefinition $definition): Field
+    public static function componentFor(CustomFieldDefinition $definition): mixed
     {
         $required = $definition->getValidationRule('required', false);
         $name = "custom.{$definition->field_name}";
+
+        if (in_array($definition->field_type, ['date_range', 'datetime_range', 'time_range'], true)) {
+            return self::rangeField($definition, $name, $required);
+        }
 
         $field = match ($definition->field_type) {
             'text' => Textarea::make($name)->rows(4),
@@ -142,13 +146,34 @@ class CustomFieldForm
         return $field;
     }
 
+    private static function rangeField(CustomFieldDefinition $definition, string $name, bool $required): Fieldset
+    {
+        $fields = match ($definition->field_type) {
+            'date_range' => [
+                DatePicker::make("{$name}.start")->label(__('Start'))->required($required),
+                DatePicker::make("{$name}.end")->label(__('End'))->required($required),
+            ],
+            'datetime_range' => [
+                DateTimePicker::make("{$name}.start")->label(__('Start'))->required($required),
+                DateTimePicker::make("{$name}.end")->label(__('End'))->required($required),
+            ],
+            'time_range' => [
+                TimePicker::make("{$name}.start")->label(__('Start'))->required($required),
+                TimePicker::make("{$name}.end")->label(__('End'))->required($required),
+            ],
+            default => [],
+        };
+
+        return Fieldset::make($definition->getLabel())->schema($fields);
+    }
+
     /** @param array<int, Section> $children */
     private static function buildGroup1Section(string $label, array $children): Section
     {
         return Section::make($label)->schema($children)->collapsible();
     }
 
-    /** @param array<int, Field> $fields */
+    /** @param array<int, mixed> $fields */
     private static function buildGroup2Section(?string $label, array $fields): Section
     {
         return Section::make($label ?? __('General'))->schema($fields)->collapsible();

@@ -3,7 +3,9 @@
 namespace Yezper\LaravelCustomFieldsFilament\Components;
 
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -30,6 +32,7 @@ class CustomFieldTableFilter
                 'select', 'enum' => self::buildSelectFilter($definition),
                 'multi_select' => self::buildMultiSelectFilter($definition),
                 'date', 'datetime' => self::buildDateFilter($definition),
+                'date_range', 'datetime_range', 'time_range' => self::buildRangeFilter($definition),
                 'integer', 'decimal' => self::buildNumericFilter($definition),
                 default => self::buildStringFilter($definition),
             })
@@ -116,5 +119,59 @@ class CustomFieldTableFilter
                     blank($from) ? $until : (blank($until) ? $from : [$from, $until]),
                 );
             });
+    }
+
+    private static function buildRangeFilter(CustomFieldDefinition $definition): Filter
+    {
+        return Filter::make("custom_{$definition->field_name}")
+            ->label($definition->getLabel())
+            ->schema(self::rangeFilterSchema($definition))
+            ->query(function (Builder $query, array $data) use ($definition): void {
+                $from = $data['from'] ?? null;
+                $until = $data['until'] ?? null;
+
+                if (blank($from) && blank($until)) {
+                    return;
+                }
+
+                if (blank($from) || blank($until)) {
+                    app(CustomFieldQueryBuilder::class)->applyFilter(
+                        $query,
+                        $definition->entity_type,
+                        $definition->field_name,
+                        'range_contains',
+                        blank($from) ? $until : $from,
+                    );
+
+                    return;
+                }
+
+                app(CustomFieldQueryBuilder::class)->applyFilter(
+                    $query,
+                    $definition->entity_type,
+                    $definition->field_name,
+                    'range_overlaps',
+                    ['start' => $from, 'end' => $until],
+                );
+            });
+    }
+
+    /** @return array<int, mixed> */
+    private static function rangeFilterSchema(CustomFieldDefinition $definition): array
+    {
+        return match ($definition->field_type) {
+            'datetime_range' => [
+                DateTimePicker::make('from')->label("{$definition->getLabel()} from"),
+                DateTimePicker::make('until')->label("{$definition->getLabel()} until"),
+            ],
+            'time_range' => [
+                TimePicker::make('from')->label("{$definition->getLabel()} from"),
+                TimePicker::make('until')->label("{$definition->getLabel()} until"),
+            ],
+            default => [
+                DatePicker::make('from')->label("{$definition->getLabel()} from"),
+                DatePicker::make('until')->label("{$definition->getLabel()} until"),
+            ],
+        };
     }
 }

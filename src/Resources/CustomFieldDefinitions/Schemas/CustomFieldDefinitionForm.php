@@ -135,7 +135,14 @@ class CustomFieldDefinitionForm
                     ->options(['checkbox' => __('Checkbox'), 'toggle' => __('Toggle'), 'switch' => __('Switch')])
                     ->default('toggle'),
             ],
-            'date', 'datetime', 'time', 'json' => [],
+            'date', 'datetime', 'json', 'date_range', 'datetime_range' => [],
+            'time' => [
+                TextInput::make('config.step_minutes')->label(__('Step minutes'))->numeric()->integer(),
+            ],
+            'time_range' => [
+                TextInput::make('config.step_minutes')->label(__('Step minutes'))->numeric()->integer(),
+                Toggle::make('config.allow_overnight')->label(__('Allow overnight'))->default(false),
+            ],
             'select', 'multi_select' => [
                 Repeater::make('config.options')
                     ->label(__('Options'))
