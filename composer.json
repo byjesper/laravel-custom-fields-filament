@@ -1,0 +1,30 @@
+{
+    "name": "yezper/laravel-custom-fields-filament",
+    "description": "Filament admin UI for yezper/laravel-custom-fields.",
+    "type": "library",
+    "version": "1.0.0",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "filament/filament": "^5.0",
+        "illuminate/support": "^13.0",
+        "yezper/laravel-custom-fields": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Yezper\\LaravelCustomFieldsFilament\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Yezper\\LaravelCustomFieldsFilament\\CustomFieldsFilamentServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
