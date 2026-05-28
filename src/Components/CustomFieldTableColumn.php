@@ -12,7 +12,7 @@ use Yezper\LaravelCustomFields\Support\OptionLabelResolver;
 class CustomFieldTableColumn
 {
     /** @var array<string, Model|null> */
-    private static array $relationshipCache = [];
+    protected static array $relationshipCache = [];
 
     /** @return array<int, TextColumn|IconColumn> */
     public static function make(string $entityType): array
@@ -60,8 +60,20 @@ class CustomFieldTableColumn
             'relationship' => self::resolveRelationshipLabel($definition, $value),
             'date' => Carbon::parse($value)->format('Y-m-d'),
             'datetime' => Carbon::parse($value)->format('Y-m-d H:i'),
+            'date_range' => self::formatRange($value, fn (mixed $date): string => Carbon::parse($date)->format('Y-m-d')),
+            'datetime_range' => self::formatRange($value, fn (mixed $date): string => Carbon::parse($date)->format('Y-m-d H:i')),
+            'time_range' => self::formatRange($value, fn (mixed $time): string => (string) $time),
             default => is_array($value) ? json_encode($value) : $value,
         };
+    }
+
+    private static function formatRange(mixed $value, callable $formatter): ?string
+    {
+        if (! is_array($value) || ! isset($value['start'], $value['end'])) {
+            return null;
+        }
+
+        return $formatter($value['start']).' - '.$formatter($value['end']);
     }
 
     private static function resolveRelationshipLabel(CustomFieldDefinition $definition, mixed $value): ?string
@@ -80,6 +92,8 @@ class CustomFieldTableColumn
             static::$relationshipCache[$cacheKey] = $modelClass::find($value);
         }
 
-        return static::$relationshipCache[$cacheKey]?->{$displayField} ?? $value;
+        $cached = static::$relationshipCache[$cacheKey];
+
+        return $cached === null ? $value : ($cached->{$displayField} ?? $value);
     }
 }

@@ -86,7 +86,7 @@ class CustomFieldDefinitionForm
                     ->rows(2)
                     ->rules(['nullable', 'json'])
                     ->dehydrateStateUsing(fn (?string $state): mixed => blank($state) ? null : json_decode($state, true))
-                    ->formatStateUsing(fn (mixed $state): ?string => $state === null ? null : json_encode($state)),
+                    ->formatStateUsing(fn (mixed $state): ?string => $state === null ? null : (json_encode($state) ?: null)),
             ]),
 
             Section::make(__('Conditional visibility'))->schema([
@@ -96,7 +96,7 @@ class CustomFieldDefinitionForm
                     ->rules(['nullable', 'json'])
                     ->dehydrateStateUsing(fn (?string $state): mixed => blank($state) ? null : json_decode($state, true))
                     ->rule(new ConditionalVisibility)
-                    ->formatStateUsing(fn (mixed $state): ?string => $state === null ? null : json_encode($state, JSON_PRETTY_PRINT)),
+                    ->formatStateUsing(fn (mixed $state): ?string => $state === null ? null : (json_encode($state, JSON_PRETTY_PRINT) ?: null)),
             ]),
         ]);
     }
@@ -135,7 +135,14 @@ class CustomFieldDefinitionForm
                     ->options(['checkbox' => __('Checkbox'), 'toggle' => __('Toggle'), 'switch' => __('Switch')])
                     ->default('toggle'),
             ],
-            'date', 'datetime', 'time', 'json' => [],
+            'date', 'datetime', 'json', 'date_range', 'datetime_range' => [],
+            'time' => [
+                TextInput::make('config.step_minutes')->label(__('Step minutes'))->numeric()->integer(),
+            ],
+            'time_range' => [
+                TextInput::make('config.step_minutes')->label(__('Step minutes'))->numeric()->integer(),
+                Toggle::make('config.allow_overnight')->label(__('Allow overnight'))->default(false),
+            ],
             'select', 'multi_select' => [
                 Repeater::make('config.options')
                     ->label(__('Options'))

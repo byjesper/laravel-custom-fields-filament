@@ -10,6 +10,7 @@ class CreateCustomFieldDefinition extends CreateRecord
 {
     protected static string $resource = CustomFieldDefinitionResource::class;
 
+    #[\Override]
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         return array_merge(app(ContextResolver::class)->current()->attributes(), $data);

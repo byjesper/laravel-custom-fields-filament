@@ -9,6 +9,7 @@ class EditCustomFieldDefinition extends EditRecord
 {
     protected static string $resource = CustomFieldDefinitionResource::class;
 
+    #[\Override]
     protected function getHeaderActions(): array
     {
         return [];

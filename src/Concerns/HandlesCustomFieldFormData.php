@@ -29,7 +29,7 @@ trait HandlesCustomFieldFormData
             $messages = [];
 
             foreach ($e->errors() as $key => $errors) {
-                $messages[str_starts_with($key, 'custom.') ? "data.{$key}" : $key] = $errors;
+                $messages[str_starts_with((string) $key, 'custom.') ? "data.{$key}" : $key] = $errors;
             }
 
             throw ValidationException::withMessages($messages);
