@@ -190,6 +190,33 @@ Definitions are rendered into a two-level layout:
 
 Definitions with no `group_level_1` are emitted at the top level.
 
+## Development
+
+The following Composer scripts are available for local quality checks:
+
+```bash
+# Format code automatically
+composer lint
+
+# Run all checks that CI runs
+composer test
+
+# Individual checks
+composer test:lint        # Rector + Pint (dry-run)
+composer test:type:check  # PHPStan Level 8
+composer test:unit        # Pest unit tests
+
+# Additional scripts (enforced by #7)
+composer test:parallel       # Parallel unit tests
+composer test:integration    # Integration tests
+composer test:type:coverage  # Type coverage with Pest
+composer update:snapshots    # Update Pest snapshots
+```
+
+The `composer test` aggregate currently runs the essential subset for #5/#8:
+lint, type-check, and unit tests. Full aggregate enforcement (parallel,
+integration, type-coverage) will come with #7.
+
 ## License
 
 MIT — see [LICENSE.md](LICENSE.md).

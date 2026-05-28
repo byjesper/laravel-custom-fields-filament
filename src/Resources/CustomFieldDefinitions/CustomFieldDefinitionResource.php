@@ -25,26 +25,31 @@ class CustomFieldDefinitionResource extends Resource
 
     protected static bool $isScopedToTenant = false;
 
+    #[\Override]
     public static function getModel(): string
     {
         return config('custom-fields.models.definition');
     }
 
+    #[\Override]
     public static function getNavigationGroup(): string
     {
         return __('Settings');
     }
 
+    #[\Override]
     public static function form(Schema $schema): Schema
     {
         return CustomFieldDefinitionForm::configure($schema);
     }
 
+    #[\Override]
     public static function table(Table $table): Table
     {
         return CustomFieldDefinitionsTable::configure($table);
     }
 
+    #[\Override]
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();
@@ -56,6 +61,7 @@ class CustomFieldDefinitionResource extends Resource
         return $query;
     }
 
+    #[\Override]
     public static function getPages(): array
     {
         return [

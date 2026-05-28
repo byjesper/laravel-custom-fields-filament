@@ -12,7 +12,7 @@ use Yezper\LaravelCustomFields\Support\OptionLabelResolver;
 class CustomFieldTableColumn
 {
     /** @var array<string, Model|null> */
-    private static array $relationshipCache = [];
+    protected static array $relationshipCache = [];
 
     /** @return array<int, TextColumn|IconColumn> */
     public static function make(string $entityType): array
@@ -92,6 +92,8 @@ class CustomFieldTableColumn
             static::$relationshipCache[$cacheKey] = $modelClass::find($value);
         }
 
-        return static::$relationshipCache[$cacheKey]?->{$displayField} ?? $value;
+        $cached = static::$relationshipCache[$cacheKey];
+
+        return $cached === null ? $value : ($cached->{$displayField} ?? $value);
     }
 }

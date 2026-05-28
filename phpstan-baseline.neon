@@ -1,0 +1,31 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Trait Yezper\\LaravelCustomFieldsFilament\\Concerns\\HandlesCustomFieldFormData is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Concerns/HandlesCustomFieldFormData.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 2
+			path: src/Resources/CustomFieldDefinitions/Schemas/CustomFieldDefinitionForm.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 2
+			path: src/Resources/CustomFieldDefinitions/Schemas/CustomFieldDefinitionForm.php
+
+		-
+			message: '#^Unable to resolve the template type TKey in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Resources/CustomFieldDefinitions/Tables/CustomFieldDefinitionsTable.php
+
+		-
+			message: '#^Unable to resolve the template type TValue in call to function collect$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Resources/CustomFieldDefinitions/Tables/CustomFieldDefinitionsTable.php

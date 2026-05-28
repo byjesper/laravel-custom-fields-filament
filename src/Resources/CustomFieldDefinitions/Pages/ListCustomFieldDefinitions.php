@@ -10,6 +10,7 @@ class ListCustomFieldDefinitions extends ListRecords
 {
     protected static string $resource = CustomFieldDefinitionResource::class;
 
+    #[\Override]
     protected function getHeaderActions(): array
     {
         return [

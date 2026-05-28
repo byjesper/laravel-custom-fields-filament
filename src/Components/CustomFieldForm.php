@@ -43,7 +43,7 @@ class CustomFieldForm
         foreach ($definitions as $definition) {
             $field = self::componentFor($definition);
 
-            if ($record === null && $definition->default_value !== null && method_exists($field, 'default')) {
+            if ($record === null && $definition->default_value !== null) {
                 $field->default($definition->default_value);
             }
 
@@ -109,7 +109,7 @@ class CustomFieldForm
         $field = match ($definition->field_type) {
             'text' => Textarea::make($name)->rows(4),
             'integer' => TextInput::make($name)->numeric()->integer(),
-            'decimal' => TextInput::make($name)->numeric()->step(pow(10, -((int) $definition->getConfigValue('scale', 2)))),
+            'decimal' => TextInput::make($name)->numeric()->step(10 ** -((int) $definition->getConfigValue('scale', 2))),
             'boolean' => Toggle::make($name),
             'date' => DatePicker::make($name),
             'datetime' => DateTimePicker::make($name),
@@ -121,7 +121,7 @@ class CustomFieldForm
                 ->rows(5)
                 ->rules(['nullable', 'json'])
                 ->dehydrateStateUsing(fn (?string $state): mixed => blank($state) ? null : json_decode($state, true))
-                ->formatStateUsing(fn (mixed $state): ?string => $state === null ? null : json_encode($state, JSON_PRETTY_PRINT)),
+                ->formatStateUsing(fn (mixed $state): ?string => $state === null ? null : (json_encode($state, JSON_PRETTY_PRINT) ?: null)),
             default => TextInput::make($name),
         };
 

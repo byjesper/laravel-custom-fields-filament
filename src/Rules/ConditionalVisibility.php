@@ -7,11 +7,11 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class ConditionalVisibility implements ValidationRule
 {
-    private const ALLOWED_OPS = ['eq', 'neq', 'in', 'notIn', 'truthy', 'falsy'];
+    private const array ALLOWED_OPS = ['eq', 'neq', 'in', 'notIn', 'truthy', 'falsy'];
 
-    private const VALUE_REQUIRED_OPS = ['eq', 'neq', 'in', 'notIn'];
+    private const array VALUE_REQUIRED_OPS = ['eq', 'neq', 'in', 'notIn'];
 
-    private const VALUE_FORBIDDEN_OPS = ['truthy', 'falsy'];
+    private const array VALUE_FORBIDDEN_OPS = ['truthy', 'falsy'];
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
