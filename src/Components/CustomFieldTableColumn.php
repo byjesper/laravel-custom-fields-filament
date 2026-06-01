@@ -34,7 +34,7 @@ class CustomFieldTableColumn
     {
         return TextColumn::make("custom_field_{$definition->field_name}")
             ->label($definition->getLabel())
-            ->state(fn ($record): mixed => self::resolveValue($definition, $record->getCustomFieldValue($definition->field_name)))
+            ->state(fn (Model $record): mixed => self::resolveValue($definition, self::customFieldValueFor($record, $definition->field_name)))
             ->toggleable()
             ->sortable(false)
             ->searchable(false);
@@ -44,7 +44,7 @@ class CustomFieldTableColumn
     {
         return IconColumn::make("custom_field_{$definition->field_name}")
             ->label($definition->getLabel())
-            ->state(fn ($record): mixed => $record->getCustomFieldValue($definition->field_name))
+            ->state(fn (Model $record): mixed => self::customFieldValueFor($record, $definition->field_name))
             ->boolean()
             ->toggleable();
     }
@@ -65,6 +65,15 @@ class CustomFieldTableColumn
             'time_range' => self::formatRange($value, fn (mixed $time): string => (string) $time),
             default => is_array($value) ? json_encode($value) : $value,
         };
+    }
+
+    private static function customFieldValueFor(Model $record, string $fieldName): mixed
+    {
+        if (! method_exists($record, 'getCustomFieldValue')) {
+            return null;
+        }
+
+        return $record->getCustomFieldValue($fieldName);
     }
 
     private static function formatRange(mixed $value, callable $formatter): ?string

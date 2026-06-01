@@ -2,4 +2,4 @@
 
 use Yezper\LaravelCustomFieldsFilament\Tests\TestCase;
 
-uses(TestCase::class)->in('Smoke');
+uses(TestCase::class)->in('Smoke', 'Unit', 'Feature', 'Integration');

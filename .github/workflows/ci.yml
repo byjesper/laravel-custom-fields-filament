@@ -36,11 +36,5 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
-      - name: Run linter checks
-        run: composer test:lint
-
-      - name: Run static analysis
-        run: composer test:type:check
-
-      - name: Run unit tests
-        run: composer test:unit
+      - name: Run test suite
+        run: composer test

@@ -49,12 +49,15 @@
         "test:type:coverage": "php -d memory_limit=-1 vendor/bin/pest --type-coverage --min=100",
         "test:unit": "pest --exclude-group=integration --compact",
         "test:parallel": "pest --exclude-group=integration --parallel --processes=3",
-        "test:integration": "php -r \"fwrite(STDERR, 'No integration tests are defined yet. See GitHub issue #7.'.PHP_EOL); exit(0);\"",
+        "test:integration": "pest --group=integration -v",
         "update:snapshots": "REBUILD_SNAPSHOTS=true pest --update-snapshots",
         "test": [
             "@test:lint",
             "@test:type:check",
-            "@test:unit"
+            "@test:type:coverage",
+            "@test:unit",
+            "@test:parallel",
+            "@test:integration"
         ]
     },
     "extra": {

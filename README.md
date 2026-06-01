@@ -213,9 +213,8 @@ composer test:type:coverage  # Type coverage with Pest
 composer update:snapshots    # Update Pest snapshots
 ```
 
-The `composer test` aggregate currently runs the essential subset for #5/#8:
-lint, type-check, and unit tests. Full aggregate enforcement (parallel,
-integration, type-coverage) will come with #7.
+The `composer test` aggregate runs the full package quality gate: lint,
+type-check, type coverage, unit tests, parallel tests, and integration tests.
 
 ## License
 
