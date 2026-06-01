@@ -33,10 +33,22 @@ jobs:
       - name: Validate composer.json
         run: composer validate --strict
 
+      - name: Ensure private dependency token is configured
+        run: |
+          if [ -z "$CUSTOM_FIELDS_COMPOSER_TOKEN" ]; then
+            echo "::error::CUSTOM_FIELDS_COMPOSER_TOKEN must have read access to Yezper/laravel-custom-fields for Composer installs."
+            exit 1
+          fi
+        env:
+          CUSTOM_FIELDS_COMPOSER_TOKEN: ${{ secrets.CUSTOM_FIELDS_COMPOSER_TOKEN }}
+
+      - name: Configure Composer auth
+        run: composer config --global github-oauth.github.com "$CUSTOM_FIELDS_COMPOSER_TOKEN"
+        env:
+          CUSTOM_FIELDS_COMPOSER_TOKEN: ${{ secrets.CUSTOM_FIELDS_COMPOSER_TOKEN }}
+
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
-        env:
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ github.token }}"}}'
 
       - name: Run test suite
         run: composer test
