@@ -5,6 +5,7 @@ namespace Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pa
 use Filament\Resources\Pages\CreateRecord;
 use Yezper\LaravelCustomFields\Services\ContextResolver;
 use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
+use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
 
 class CreateCustomFieldDefinition extends CreateRecord
 {
@@ -13,6 +14,9 @@ class CreateCustomFieldDefinition extends CreateRecord
     #[\Override]
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        return array_merge(app(ContextResolver::class)->current()->attributes(), $data);
+        return array_merge(
+            app(ContextResolver::class)->current()->attributes(),
+            CustomFieldDefinitionForm::normalizeFormData($data),
+        );
     }
 }

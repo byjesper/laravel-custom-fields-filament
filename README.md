@@ -168,9 +168,10 @@ core package. For temporal fields this currently includes:
 - `time`: optional `config.step_minutes`
 - `time_range`: optional `config.step_minutes` and `config.allow_overnight`
 
-Date and datetime validation semantics live in `validation_rules` in the core
-package. Rich, type-aware validation-rule builders are planned, but raw JSON
-fields may still be used by early adopters until that UI lands.
+Date, datetime, time, and their range variants expose type-aware validation
+controls for required, fixed `min` / `max`, and relative date/datetime bounds.
+Relative date rules use the `today` anchor; relative datetime rules use `now`.
+Time fields intentionally support fixed bounds only.
 
 ## Conditional visibility
 
