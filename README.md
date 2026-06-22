@@ -14,6 +14,9 @@ panel.
 - **`CustomFieldForm::make($entityType, ?$record)`** — builds the form schema
   for an entity, automatically grouped into two-level collapsible sections
   driven by `group_level_1` / `group_level_2`.
+- **`CustomFieldInfolist::make($entityType, ?$record)`** — builds the matching
+  read-only infolist schema, with type-aware display values and the same
+  grouping as the form.
 - **`CustomFieldTableColumn::make($entityType)`** — returns toggleable table
   columns for every active custom field, with proper formatting for selects,
   relationships, dates, ranges, and booleans.
@@ -108,6 +111,25 @@ class EditContact extends EditRecord
 The `custom_field_values` column is observed by the core package, which
 mirrors changes into `custom_field_index_values` on save.
 
+## Displaying custom fields in infolists
+
+Use the read-only counterpart on a View/detail page. Pass the displayed model
+so the component can read values through the core package's
+`getCustomFieldValue()` accessor:
+
+```php
+use Filament\Schemas\Components\Tabs\Tab;
+use Illuminate\Database\Eloquent\Model;
+use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldInfolist;
+
+Tab::make(__('fields.custom_fields'))
+    ->schema(fn (?Model $record) => CustomFieldInfolist::make('contact', $record));
+```
+
+The infolist is display-only. It does not apply form defaults or conditional
+visibility rules, so a field hidden by a form condition remains visible on the
+detail page in this release.
+
 ## Showing custom fields in tables
 
 ```php
@@ -159,6 +181,11 @@ $table->filters([
 | `multi_select`   | `CheckboxList`       |
 | `relationship`   | searchable `Select` pulling from `custom-fields.relationships.targets` |
 | `json`           | `Textarea` with JSON encode/decode |
+
+`CustomFieldInfolist` maps the same types to read-only entries: booleans use
+icons; dates and times use Filament's display formatting; select values and
+relationships resolve to labels; multi-select values render as badges; text
+and JSON values span the full width.
 
 ## Type configuration
 
