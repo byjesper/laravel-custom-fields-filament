@@ -8,18 +8,26 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\TextEntry as InfolistTextEntry;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Section;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
 use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldForm;
+use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldInfolist;
 use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldTableColumn;
 use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldTableFilter;
+use Yezper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
+use Yezper\LaravelCustomFieldsFilament\Tests\Fixtures\Contact;
 use Yezper\LaravelCustomFieldsFilament\Tests\Fixtures\CustomFieldFormDataHarness;
 use Yezper\LaravelCustomFieldsFilament\Tests\Fixtures\Organization;
 
@@ -67,25 +75,161 @@ it('groups generated custom field forms by definition grouping metadata', functi
         ->and($schema[1])->toBeInstanceOf(Section::class);
 });
 
-it('formats table column state for display oriented field types', function (): void {
+it('preserves golden table display states through the shared resolver', function (): void {
     Organization::query()->create(['id' => '018f11f2-7ad2-72f1-9ea1-1867d37a3001', 'name' => 'Acme']);
 
-    $resolve = new ReflectionMethod(CustomFieldTableColumn::class, 'resolveValue');
-    $resolve->setAccessible(true);
+    $resolver = app(CustomFieldDisplayResolver::class);
+    $relationship = filamentDefinition('organization', 'relationship', [
+        'target_entity' => 'organization',
+        'display_field' => 'name',
+    ]);
+    $record = new Contact([
+        'custom_field_values' => ['organization' => ['value' => '018f11f2-7ad2-72f1-9ea1-1867d37a3001']],
+    ]);
+    $resolver->primeRelationshipLabels($relationship, [$record]);
 
-    expect($resolve->invoke(null, filamentDefinition('segment', 'select', [
+    expect($resolver->formatForTable(filamentDefinition('segment', 'select', [
         'options' => [['value' => 'vip', 'label' => ['en' => 'VIP']]],
     ]), 'vip'))->toBe('VIP')
-        ->and($resolve->invoke(null, filamentDefinition('tags', 'multi_select', [
+        ->and($resolver->formatForTable(filamentDefinition('tags', 'multi_select', [
             'options' => [['value' => 'vip', 'label' => ['en' => 'VIP']]],
         ]), ['vip']))->toBe('VIP')
-        ->and($resolve->invoke(null, filamentDefinition('organization', 'relationship', [
-            'target_entity' => 'organization',
-            'display_field' => 'name',
-        ]), '018f11f2-7ad2-72f1-9ea1-1867d37a3001'))->toBe('Acme')
-        ->and($resolve->invoke(null, filamentDefinition('window', 'date_range'), ['start' => '2026-06-01', 'end' => '2026-06-30']))
+        ->and($resolver->formatForTable($relationship, '018f11f2-7ad2-72f1-9ea1-1867d37a3001'))->toBe('Acme')
+        ->and($resolver->formatForTable(filamentDefinition('window', 'date_range'), ['start' => '2026-06-01', 'end' => '2026-06-30']))
         ->toBe('2026-06-01 - 2026-06-30')
-        ->and($resolve->invoke(null, filamentDefinition('payload', 'json'), ['a' => 1]))->toBe('{"a":1}');
+        ->and($resolver->formatForTable(filamentDefinition('payload', 'json'), ['a' => 1]))->toBe('{"a":1}');
+});
+
+it('renders persisted form bridge values through type-aware infolist entries', function (): void {
+    Organization::query()->create(['id' => '018f11f2-7ad2-72f1-9ea1-1867d37a3001', 'name' => 'Acme']);
+
+    $definitions = [];
+
+    foreach ([
+        'name' => 'string',
+        'notes' => 'text',
+        'count' => 'integer',
+        'amount' => 'decimal',
+        'enabled' => 'boolean',
+        'starts_on' => 'date',
+        'starts_at' => 'datetime',
+        'starts_time' => 'time',
+        'segment' => 'select',
+        'status' => 'enum',
+        'tags' => 'multi_select',
+        'organization' => 'relationship',
+        'metadata' => 'json',
+        'date_window' => 'date_range',
+        'datetime_window' => 'datetime_range',
+        'time_window' => 'time_range',
+    ] as $name => $type) {
+        $definitions[$name] = filamentDefinition($name, $type, match ($type) {
+            'select', 'enum', 'multi_select' => ['options' => [['value' => 'vip', 'label' => ['en' => 'VIP']], ['value' => 'gold', 'label' => ['en' => 'Gold']]]],
+            'relationship' => ['target_entity' => 'organization', 'display_field' => 'name'],
+            'decimal' => ['scale' => 2],
+            default => [],
+        });
+    }
+
+    $custom = [
+        'name' => 'Ada',
+        'notes' => '<strong>Safe</strong>',
+        'count' => 7,
+        'amount' => 2.5,
+        'enabled' => true,
+        'starts_on' => '2026-06-01',
+        'starts_at' => '2026-06-01 09:30:00',
+        'starts_time' => '09:30:00',
+        'segment' => 'vip',
+        'status' => 'gold',
+        'tags' => ['vip', 'gold'],
+        'organization' => '018f11f2-7ad2-72f1-9ea1-1867d37a3001',
+        'metadata' => ['key' => 'value'],
+        'date_window' => ['start' => '2026-06-01', 'end' => '2026-06-30'],
+        'datetime_window' => ['start' => '2026-06-01 09:30:00', 'end' => '2026-06-30 17:00:00'],
+        'time_window' => ['start' => '09:00:00', 'end' => '17:00:00'],
+    ];
+    $harness = new CustomFieldFormDataHarness;
+    $contact = Contact::query()->create([
+        'id' => fake()->uuid(),
+        'custom_field_values' => $harness->build($custom),
+    ]);
+
+    $entryFor = new ReflectionMethod(CustomFieldInfolist::class, 'entryFor');
+    $entryFor->setAccessible(true);
+    $resolver = app(CustomFieldDisplayResolver::class);
+    $entries = [];
+
+    foreach ($definitions as $name => $definition) {
+        $entries["custom_field_{$name}"] = $entryFor->invoke(null, $definition, $contact, $resolver);
+    }
+
+    expect($entries['custom_field_name'])->toBeInstanceOf(InfolistTextEntry::class)
+        ->and($entries['custom_field_enabled'])->toBeInstanceOf(IconEntry::class)
+        ->and($entries['custom_field_name']->getState())->toBe('Ada')
+        ->and($entries['custom_field_segment']->getState())->toBe('VIP')
+        ->and($entries['custom_field_tags']->getState())->toBe(['VIP', 'Gold'])
+        ->and($entries['custom_field_organization']->getState())->toBe('Acme')
+        ->and($entries['custom_field_metadata']->getState())->toBe("{\n    \"key\": \"value\"\n}")
+        ->and($entries['custom_field_date_window']->getState())->toBe('2026-06-01 - 2026-06-30')
+        ->and($entries['custom_field_datetime_window']->getState())->toBe('2026-06-01 09:30 - 2026-06-30 17:00')
+        ->and($entries['custom_field_time_window']->getState())->toBe('09:00:00 - 17:00:00');
+});
+
+it('shares form grouping and returns an empty infolist without definitions', function (): void {
+    expect(CustomFieldInfolist::make('contact'))->toBe([]);
+
+    filamentDefinition('ungrouped', 'string', [], ['sort_order' => 1]);
+    filamentDefinition('finance', 'decimal', [], ['group_level_1' => 'Finance', 'group_level_2' => 'Revenue', 'sort_order' => 2]);
+    filamentDefinition('inactive', 'string', [], ['is_active' => false]);
+
+    $form = CustomFieldForm::make('contact');
+    $infolist = CustomFieldInfolist::make('contact');
+
+    expect($form)->toHaveCount(2)
+        ->and($infolist)->toHaveCount(2)
+        ->and($form[0]->getHeading())->toBe($infolist[0]->getHeading())
+        ->and($form[1]->getHeading())->toBe($infolist[1]->getHeading());
+});
+
+it('batch resolves relationship labels once for a table page of records', function (): void {
+    filamentDefinition('organization', 'relationship', [
+        'target_entity' => 'organization',
+        'display_field' => 'name',
+    ]);
+    Organization::query()->create(['id' => '018f11f2-7ad2-72f1-9ea1-1867d37a3001', 'name' => 'Acme']);
+    Organization::query()->create(['id' => '018f11f2-7ad2-72f1-9ea1-1867d37a3002', 'name' => 'Globex']);
+
+    foreach (['018f11f2-7ad2-72f1-9ea1-1867d37a3001', '018f11f2-7ad2-72f1-9ea1-1867d37a3002', '018f11f2-7ad2-72f1-9ea1-1867d37a3001'] as $organizationId) {
+        Contact::query()->create([
+            'id' => fake()->uuid(),
+            'custom_field_values' => ['organization' => ['value' => $organizationId]],
+        ]);
+    }
+
+    $relationshipQueries = [];
+    DB::listen(function ($query) use (&$relationshipQueries): void {
+        if (str_contains($query->sql, 'cf_filament_organizations')) {
+            $relationshipQueries[] = $query->sql;
+        }
+    });
+
+    $records = Contact::query()->get();
+    $livewire = Mockery::mock(HasTable::class);
+    $livewire->shouldReceive('getTableRecords')->andReturn($records);
+    $livewire->shouldReceive('getTableRecordKey')->andReturnUsing(fn (Contact $record): string => (string) $record->getKey());
+    $table = Table::make($livewire);
+    $column = CustomFieldTableColumn::make('contact')[0]->table($table);
+    $states = [];
+
+    foreach ($records as $record) {
+        $column->record($record);
+        $states[] = $column->getState();
+    }
+
+    expect($states)->toBe(['Acme', 'Globex', 'Acme']);
+
+    expect($relationshipQueries)->toHaveCount(1);
 });
 
 it('builds table columns and filters for active definitions', function (): void {

@@ -2,18 +2,17 @@
 
 namespace Yezper\LaravelCustomFieldsFilament\Components;
 
-use Carbon\Carbon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
-use Yezper\LaravelCustomFields\Support\OptionLabelResolver;
+use Yezper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
 
 class CustomFieldTableColumn
 {
-    /** @var array<string, Model|null> */
-    protected static array $relationshipCache = [];
-
     /** @return array<int, TextColumn|IconColumn> */
     public static function make(string $entityType): array
     {
@@ -32,77 +31,35 @@ class CustomFieldTableColumn
 
     private static function buildTextColumn(CustomFieldDefinition $definition): TextColumn
     {
-        return TextColumn::make("custom_field_{$definition->field_name}")
+        $column = TextColumn::make("custom_field_{$definition->field_name}")
             ->label($definition->getLabel())
-            ->state(fn (Model $record): mixed => self::resolveValue($definition, self::customFieldValueFor($record, $definition->field_name)))
             ->toggleable()
             ->sortable(false)
             ->searchable(false);
+
+        return $definition->field_type === 'relationship'
+            ? $column->state(function (Model $record, Table $table) use ($definition): mixed {
+                $resolver = app(CustomFieldDisplayResolver::class);
+                $records = $table->getRecords();
+                $resolver->primeRelationshipLabels(
+                    $definition,
+                    ($records instanceof Paginator || $records instanceof CursorPaginator) ? $records->items() : $records,
+                );
+
+                return $resolver->formatForTable($definition, $resolver->valueFor($record, $definition->field_name));
+            })
+            : $column->state(fn (Model $record): mixed => app(CustomFieldDisplayResolver::class)->formatForTable(
+                $definition,
+                app(CustomFieldDisplayResolver::class)->valueFor($record, $definition->field_name),
+            ));
     }
 
     private static function buildBooleanColumn(CustomFieldDefinition $definition): IconColumn
     {
         return IconColumn::make("custom_field_{$definition->field_name}")
             ->label($definition->getLabel())
-            ->state(fn (Model $record): mixed => self::customFieldValueFor($record, $definition->field_name))
+            ->state(fn (Model $record): mixed => app(CustomFieldDisplayResolver::class)->valueFor($record, $definition->field_name))
             ->boolean()
             ->toggleable();
-    }
-
-    private static function resolveValue(CustomFieldDefinition $definition, mixed $value): mixed
-    {
-        if ($value === null) {
-            return null;
-        }
-
-        return match ($definition->field_type) {
-            'select', 'enum', 'multi_select' => app(OptionLabelResolver::class)->resolveForDisplay($definition->getConfigValue('options', []), $value),
-            'relationship' => self::resolveRelationshipLabel($definition, $value),
-            'date' => Carbon::parse($value)->format('Y-m-d'),
-            'datetime' => Carbon::parse($value)->format('Y-m-d H:i'),
-            'date_range' => self::formatRange($value, fn (mixed $date): string => Carbon::parse($date)->format('Y-m-d')),
-            'datetime_range' => self::formatRange($value, fn (mixed $date): string => Carbon::parse($date)->format('Y-m-d H:i')),
-            'time_range' => self::formatRange($value, fn (mixed $time): string => (string) $time),
-            default => is_array($value) ? json_encode($value) : $value,
-        };
-    }
-
-    private static function customFieldValueFor(Model $record, string $fieldName): mixed
-    {
-        if (! method_exists($record, 'getCustomFieldValue')) {
-            return null;
-        }
-
-        return $record->getCustomFieldValue($fieldName);
-    }
-
-    private static function formatRange(mixed $value, callable $formatter): ?string
-    {
-        if (! is_array($value) || ! isset($value['start'], $value['end'])) {
-            return null;
-        }
-
-        return $formatter($value['start']).' - '.$formatter($value['end']);
-    }
-
-    private static function resolveRelationshipLabel(CustomFieldDefinition $definition, mixed $value): ?string
-    {
-        $targetEntity = $definition->getConfigValue('target_entity');
-        $target = config("custom-fields.relationships.targets.{$targetEntity}", []);
-        $modelClass = $target['model'] ?? null;
-        $displayField = $definition->getConfigValue('display_field', $target['display_field'] ?? 'name');
-
-        if ($modelClass === null || $value === null) {
-            return $value;
-        }
-
-        $cacheKey = $modelClass.'::'.$value;
-        if (! array_key_exists($cacheKey, static::$relationshipCache)) {
-            static::$relationshipCache[$cacheKey] = $modelClass::find($value);
-        }
-
-        $cached = static::$relationshipCache[$cacheKey];
-
-        return $cached === null ? $value : ($cached->{$displayField} ?? $value);
     }
 }

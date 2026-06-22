@@ -16,6 +16,7 @@ use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Model;
 use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
 use Yezper\LaravelCustomFields\Support\OptionLabelResolver;
+use Yezper\LaravelCustomFieldsFilament\Support\CustomFieldSectionLayout;
 
 class CustomFieldForm
 {
@@ -34,13 +35,7 @@ class CustomFieldForm
             return [];
         }
 
-        $output = [];
-        $currentGroup1 = null;
-        $currentGroup2 = null;
-        $group1Children = [];
-        $group2Fields = [];
-
-        foreach ($definitions as $definition) {
+        return CustomFieldSectionLayout::make($definitions, function (CustomFieldDefinition $definition) use ($record): mixed {
             $field = self::componentFor($definition);
 
             if ($record === null && $definition->default_value !== null) {
@@ -51,50 +46,8 @@ class CustomFieldForm
                 $field->visible(fn (Get $get): bool => self::evaluateVisibility($definition->conditional_visibility, $get));
             }
 
-            if ($definition->group_level_1 !== $currentGroup1) {
-                if ($group2Fields !== []) {
-                    $group1Children[] = self::buildGroup2Section($currentGroup2, $group2Fields);
-                }
-
-                if ($group1Children !== []) {
-                    if ($currentGroup1 !== null) {
-                        $output[] = self::buildGroup1Section($currentGroup1, $group1Children);
-                    } else {
-                        array_push($output, ...$group1Children);
-                    }
-                }
-
-                $currentGroup1 = $definition->group_level_1;
-                $currentGroup2 = null;
-                $group1Children = [];
-                $group2Fields = [];
-            }
-
-            if ($definition->group_level_2 !== $currentGroup2) {
-                if ($group2Fields !== []) {
-                    $group1Children[] = self::buildGroup2Section($currentGroup2, $group2Fields);
-                }
-
-                $currentGroup2 = $definition->group_level_2;
-                $group2Fields = [];
-            }
-
-            $group2Fields[] = $field;
-        }
-
-        if ($group2Fields !== []) {
-            $group1Children[] = self::buildGroup2Section($currentGroup2, $group2Fields);
-        }
-
-        if ($group1Children !== []) {
-            if ($currentGroup1 !== null) {
-                $output[] = self::buildGroup1Section($currentGroup1, $group1Children);
-            } else {
-                array_push($output, ...$group1Children);
-            }
-        }
-
-        return $output;
+            return $field;
+        });
     }
 
     public static function componentFor(CustomFieldDefinition $definition): mixed
@@ -165,18 +118,6 @@ class CustomFieldForm
         };
 
         return Fieldset::make($definition->getLabel())->schema($fields);
-    }
-
-    /** @param array<int, Section> $children */
-    private static function buildGroup1Section(string $label, array $children): Section
-    {
-        return Section::make($label)->schema($children)->collapsible();
-    }
-
-    /** @param array<int, mixed> $fields */
-    private static function buildGroup2Section(?string $label, array $fields): Section
-    {
-        return Section::make($label ?? __('General'))->schema($fields)->collapsible();
     }
 
     /** @param array<string, mixed> $rules */
