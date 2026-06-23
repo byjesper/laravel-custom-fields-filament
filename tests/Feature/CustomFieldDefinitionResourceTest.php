@@ -9,9 +9,9 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Panel;
 use Filament\Schemas\Components\Callout;
-use Yezper\LaravelCustomFieldsFilament\CustomFieldsPlugin;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
+use ByJesper\LaravelCustomFieldsFilament\CustomFieldsPlugin;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
 
 it('registers the definition resource on the Filament panel plugin', function (): void {
     $panel = Panel::make()->id('admin')->path('admin');

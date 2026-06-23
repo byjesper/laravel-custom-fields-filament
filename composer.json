@@ -1,19 +1,19 @@
 {
-    "name": "yezper/laravel-custom-fields-filament",
-    "description": "Filament admin UI for yezper/laravel-custom-fields.",
+    "name": "byjesper/laravel-custom-fields-filament",
+    "description": "Filament admin UI for byjesper/laravel-custom-fields.",
     "type": "library",
     "license": "MIT",
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/Yezper/laravel-custom-fields"
+            "url": "https://github.com/byjesper/laravel-custom-fields"
         }
     ],
     "require": {
         "php": "^8.4",
         "filament/filament": "^5.0",
         "illuminate/support": "^13.0",
-        "yezper/laravel-custom-fields": "^1.1"
+        "byjesper/laravel-custom-fields": "^2.0"
     },
     "require-dev": {
         "driftingly/rector-laravel": "^2.0",
@@ -28,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yezper\\LaravelCustomFieldsFilament\\": "src/"
+            "ByJesper\\LaravelCustomFieldsFilament\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yezper\\LaravelCustomFieldsFilament\\Tests\\": "tests/"
+            "ByJesper\\LaravelCustomFieldsFilament\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -63,7 +63,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Yezper\\LaravelCustomFieldsFilament\\CustomFieldsFilamentServiceProvider"
+                "ByJesper\\LaravelCustomFieldsFilament\\CustomFieldsFilamentServiceProvider"
             ]
         }
     },

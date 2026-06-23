@@ -1,9 +1,9 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Tests\Fixtures;
+namespace ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures;
 
 use Illuminate\Database\Eloquent\Model;
-use Yezper\LaravelCustomFields\Concerns\HasCustomFields;
+use ByJesper\LaravelCustomFields\Concerns\HasCustomFields;
 
 class Contact extends Model
 {

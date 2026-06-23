@@ -1,12 +1,12 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Support;
+namespace ByJesper\LaravelCustomFieldsFilament\Support;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use LogicException;
-use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
-use Yezper\LaravelCustomFields\Support\OptionLabelResolver;
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFields\Support\OptionLabelResolver;
 
 /** @internal */
 final class CustomFieldDisplayResolver

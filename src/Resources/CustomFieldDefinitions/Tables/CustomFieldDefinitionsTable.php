@@ -1,6 +1,6 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Tables;
+namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Tables;
 
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
@@ -10,8 +10,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
-use Yezper\LaravelCustomFields\Services\CustomFieldTypeRegistry;
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFields\Services\CustomFieldTypeRegistry;
 
 class CustomFieldDefinitionsTable
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Components;
+namespace ByJesper\LaravelCustomFieldsFilament\Components;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -10,9 +10,9 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Illuminate\Database\Eloquent\Builder;
-use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
-use Yezper\LaravelCustomFields\Services\CustomFieldQueryBuilder;
-use Yezper\LaravelCustomFields\Support\OptionLabelResolver;
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFields\Services\CustomFieldQueryBuilder;
+use ByJesper\LaravelCustomFields\Support\OptionLabelResolver;
 
 class CustomFieldTableFilter
 {

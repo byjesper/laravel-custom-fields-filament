@@ -1,14 +1,14 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Components;
+namespace ByJesper\LaravelCustomFieldsFilament\Components;
 
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Illuminate\Database\Eloquent\Model;
-use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
-use Yezper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
-use Yezper\LaravelCustomFieldsFilament\Support\CustomFieldSectionLayout;
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldSectionLayout;
 
 class CustomFieldInfolist
 {

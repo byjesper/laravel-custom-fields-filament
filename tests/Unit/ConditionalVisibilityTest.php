@@ -1,6 +1,6 @@
 <?php
 
-use Yezper\LaravelCustomFieldsFilament\Rules\ConditionalVisibility;
+use ByJesper\LaravelCustomFieldsFilament\Rules\ConditionalVisibility;
 
 it('accepts valid conditional visibility rule trees', function (): void {
     $failures = [];

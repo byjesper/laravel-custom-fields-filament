@@ -1,6 +1,6 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Rules;
+namespace ByJesper\LaravelCustomFieldsFilament\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;

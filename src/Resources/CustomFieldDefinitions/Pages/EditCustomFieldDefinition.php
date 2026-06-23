@@ -1,10 +1,10 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages;
+namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages;
 
 use Filament\Resources\Pages\EditRecord;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
 
 class EditCustomFieldDefinition extends EditRecord
 {

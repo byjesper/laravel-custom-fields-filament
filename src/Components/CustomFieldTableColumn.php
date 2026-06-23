@@ -1,6 +1,6 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Components;
+namespace ByJesper\LaravelCustomFieldsFilament\Components;
 
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -8,8 +8,8 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
-use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
-use Yezper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
 
 class CustomFieldTableColumn
 {

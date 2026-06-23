@@ -1,6 +1,6 @@
 # Laravel Custom Fields — Filament
 
-Filament v5 admin UI for [`yezper/laravel-custom-fields`](https://packagist.org/packages/yezper/laravel-custom-fields).
+Filament v5 admin UI for [`byjesper/laravel-custom-fields`](https://packagist.org/packages/byjesper/laravel-custom-fields).
 
 Plug-and-play resources, form components, and table columns for managing
 custom field definitions and editing per-record values inside any Filament
@@ -32,16 +32,16 @@ panel.
 - PHP **8.4+**
 - Laravel **13.x**
 - Filament **5.x**
-- `yezper/laravel-custom-fields` **^1.1**
+- `byjesper/laravel-custom-fields` **^1.1**
 
 ## Installation
 
 ```bash
-composer require yezper/laravel-custom-fields-filament
+composer require byjesper/laravel-custom-fields-filament
 ```
 
 Make sure the core package is installed and migrated (see its
-[README](https://github.com/yezper/laravel-custom-fields/blob/main/README.md)).
+[README](https://github.com/byjesper/laravel-custom-fields/blob/main/README.md)).
 
 ### Register the plugin
 
@@ -49,7 +49,7 @@ In your panel provider:
 
 ```php
 use Filament\Panel;
-use Yezper\LaravelCustomFieldsFilament\CustomFieldsPlugin;
+use ByJesper\LaravelCustomFieldsFilament\CustomFieldsPlugin;
 
 public function panel(Panel $panel): Panel
 {
@@ -71,7 +71,7 @@ entity:
 
 ```php
 use Filament\Schemas\Schema;
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldForm;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldForm;
 
 public static function form(Schema $schema): Schema
 {
@@ -89,7 +89,7 @@ don't collide with native model attributes. Use the
 validate the payload before saving:
 
 ```php
-use Yezper\LaravelCustomFieldsFilament\Concerns\HandlesCustomFieldFormData;
+use ByJesper\LaravelCustomFieldsFilament\Concerns\HandlesCustomFieldFormData;
 
 class EditContact extends EditRecord
 {
@@ -120,7 +120,7 @@ so the component can read values through the core package's
 ```php
 use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Model;
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldInfolist;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldInfolist;
 
 Tab::make(__('fields.custom_fields'))
     ->schema(fn (?Model $record) => CustomFieldInfolist::make('contact', $record));
@@ -134,7 +134,7 @@ detail page in this release.
 
 ```php
 use Filament\Tables\Table;
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldTableColumn;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldTableColumn;
 
 public static function table(Table $table): Table
 {
@@ -155,7 +155,7 @@ the list is long.
 ## Filtering by custom fields
 
 ```php
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldTableFilter;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldTableFilter;
 
 $table->filters([
     ...CustomFieldTableFilter::make('contact'),

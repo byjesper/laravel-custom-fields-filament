@@ -1,6 +1,6 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas;
+namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas;
 
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -15,8 +15,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rules\Unique;
-use Yezper\LaravelCustomFields\Services\CustomFieldTypeRegistry;
-use Yezper\LaravelCustomFieldsFilament\Rules\ConditionalVisibility;
+use ByJesper\LaravelCustomFields\Services\CustomFieldTypeRegistry;
+use ByJesper\LaravelCustomFieldsFilament\Rules\ConditionalVisibility;
 
 class CustomFieldDefinitionForm
 {

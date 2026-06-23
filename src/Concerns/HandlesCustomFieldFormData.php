@@ -1,6 +1,6 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Concerns;
+namespace ByJesper\LaravelCustomFieldsFilament\Concerns;
 
 use Illuminate\Validation\ValidationException;
 

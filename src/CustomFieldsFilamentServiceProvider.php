@@ -1,9 +1,9 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament;
+namespace ByJesper\LaravelCustomFieldsFilament;
 
 use Illuminate\Support\ServiceProvider;
-use Yezper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
 
 class CustomFieldsFilamentServiceProvider extends ServiceProvider
 {

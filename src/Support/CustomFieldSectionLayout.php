@@ -1,10 +1,10 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Support;
+namespace ByJesper\LaravelCustomFieldsFilament\Support;
 
 use Closure;
 use Filament\Schemas\Components\Section;
-use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
 
 /** @internal */
 final class CustomFieldSectionLayout

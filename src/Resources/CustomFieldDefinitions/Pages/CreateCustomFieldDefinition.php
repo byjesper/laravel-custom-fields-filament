@@ -1,11 +1,11 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages;
+namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages;
 
 use Filament\Resources\Pages\CreateRecord;
-use Yezper\LaravelCustomFields\Services\ContextResolver;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
+use ByJesper\LaravelCustomFields\Services\ContextResolver;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
 
 class CreateCustomFieldDefinition extends CreateRecord
 {

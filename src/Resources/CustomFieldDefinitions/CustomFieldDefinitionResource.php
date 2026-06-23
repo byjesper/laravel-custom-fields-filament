@@ -1,6 +1,6 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions;
+namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions;
 
 use BackedEnum;
 use Filament\Resources\Resource;
@@ -8,12 +8,12 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Yezper\LaravelCustomFields\Services\ContextResolver;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages\CreateCustomFieldDefinition;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages\EditCustomFieldDefinition;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages\ListCustomFieldDefinitions;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Tables\CustomFieldDefinitionsTable;
+use ByJesper\LaravelCustomFields\Services\ContextResolver;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages\CreateCustomFieldDefinition;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages\EditCustomFieldDefinition;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages\ListCustomFieldDefinitions;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Tables\CustomFieldDefinitionsTable;
 
 class CustomFieldDefinitionResource extends Resource
 {

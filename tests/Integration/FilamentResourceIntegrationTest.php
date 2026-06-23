@@ -1,8 +1,8 @@
 <?php
 
-use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldForm;
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldTableFilter;
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldForm;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldTableFilter;
 
 beforeEach(function (): void {
     $this->resetSqliteDatabase();

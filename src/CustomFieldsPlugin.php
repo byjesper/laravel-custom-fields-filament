@@ -1,10 +1,10 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament;
+namespace ByJesper\LaravelCustomFieldsFilament;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use Yezper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
 
 class CustomFieldsPlugin implements Plugin
 {

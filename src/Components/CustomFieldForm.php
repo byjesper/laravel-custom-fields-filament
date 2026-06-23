@@ -1,6 +1,6 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Components;
+namespace ByJesper\LaravelCustomFieldsFilament\Components;
 
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
@@ -14,9 +14,9 @@ use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Model;
-use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
-use Yezper\LaravelCustomFields\Support\OptionLabelResolver;
-use Yezper\LaravelCustomFieldsFilament\Support\CustomFieldSectionLayout;
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFields\Support\OptionLabelResolver;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldSectionLayout;
 
 class CustomFieldForm
 {

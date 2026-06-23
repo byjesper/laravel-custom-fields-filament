@@ -21,15 +21,15 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-use Yezper\LaravelCustomFields\Models\CustomFieldDefinition;
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldForm;
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldInfolist;
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldTableColumn;
-use Yezper\LaravelCustomFieldsFilament\Components\CustomFieldTableFilter;
-use Yezper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
-use Yezper\LaravelCustomFieldsFilament\Tests\Fixtures\Contact;
-use Yezper\LaravelCustomFieldsFilament\Tests\Fixtures\CustomFieldFormDataHarness;
-use Yezper\LaravelCustomFieldsFilament\Tests\Fixtures\Organization;
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldForm;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldInfolist;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldTableColumn;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldTableFilter;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Contact;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\CustomFieldFormDataHarness;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Organization;
 
 beforeEach(function (): void {
     $this->resetSqliteDatabase();

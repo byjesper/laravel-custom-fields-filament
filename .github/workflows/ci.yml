@@ -36,7 +36,7 @@ jobs:
       - name: Ensure private dependency token is configured
         run: |
           if [ -z "$CUSTOM_FIELDS_COMPOSER_TOKEN" ]; then
-            echo "::error::CUSTOM_FIELDS_COMPOSER_TOKEN must have read access to Yezper/laravel-custom-fields for Composer installs."
+            echo "::error::CUSTOM_FIELDS_COMPOSER_TOKEN must have read access to ByJesper/laravel-custom-fields for Composer installs."
             exit 1
           fi
         env:

@@ -1,16 +1,16 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Tests;
+namespace ByJesper\LaravelCustomFieldsFilament\Tests;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Yezper\LaravelCustomFields\CustomFieldsServiceProvider;
-use Yezper\LaravelCustomFieldsFilament\CustomFieldsFilamentServiceProvider;
-use Yezper\LaravelCustomFieldsFilament\Tests\Fixtures\Contact;
-use Yezper\LaravelCustomFieldsFilament\Tests\Fixtures\Organization;
+use ByJesper\LaravelCustomFields\CustomFieldsServiceProvider;
+use ByJesper\LaravelCustomFieldsFilament\CustomFieldsFilamentServiceProvider;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Contact;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Organization;
 
 class TestCase extends Orchestra
 {

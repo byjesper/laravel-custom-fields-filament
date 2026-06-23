@@ -1,6 +1,6 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Tests\Fixtures;
+namespace ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures;
 
 use Illuminate\Database\Eloquent\Model;
 

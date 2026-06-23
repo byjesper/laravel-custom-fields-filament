@@ -1,8 +1,8 @@
 <?php
 
-namespace Yezper\LaravelCustomFieldsFilament\Tests\Fixtures;
+namespace ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures;
 
-use Yezper\LaravelCustomFieldsFilament\Concerns\HandlesCustomFieldFormData;
+use ByJesper\LaravelCustomFieldsFilament\Concerns\HandlesCustomFieldFormData;
 
 class CustomFieldFormDataHarness
 {
