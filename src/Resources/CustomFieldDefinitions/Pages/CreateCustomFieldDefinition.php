@@ -2,10 +2,10 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages;
 
-use Filament\Resources\Pages\CreateRecord;
 use ByJesper\LaravelCustomFields\Services\ContextResolver;
 use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
 use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
+use Filament\Resources\Pages\CreateRecord;
 
 class CreateCustomFieldDefinition extends CreateRecord
 {

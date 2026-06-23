@@ -2,8 +2,8 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament;
 
-use Illuminate\Support\ServiceProvider;
 use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
+use Illuminate\Support\ServiceProvider;
 
 class CustomFieldsFilamentServiceProvider extends ServiceProvider
 {

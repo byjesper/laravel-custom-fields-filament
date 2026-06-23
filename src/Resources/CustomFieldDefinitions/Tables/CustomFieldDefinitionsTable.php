@@ -2,6 +2,8 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Tables;
 
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFields\Services\CustomFieldTypeRegistry;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
@@ -10,8 +12,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
-use ByJesper\LaravelCustomFields\Services\CustomFieldTypeRegistry;
 
 class CustomFieldDefinitionsTable
 {

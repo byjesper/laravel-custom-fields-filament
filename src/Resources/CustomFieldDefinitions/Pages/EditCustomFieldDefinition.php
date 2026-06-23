@@ -2,9 +2,9 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages;
 
-use Filament\Resources\Pages\EditRecord;
 use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
 use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
+use Filament\Resources\Pages\EditRecord;
 
 class EditCustomFieldDefinition extends EditRecord
 {

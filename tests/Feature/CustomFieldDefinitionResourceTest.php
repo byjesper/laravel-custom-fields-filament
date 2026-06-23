@@ -1,5 +1,8 @@
 <?php
 
+use ByJesper\LaravelCustomFieldsFilament\CustomFieldsPlugin;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Repeater;
@@ -9,9 +12,6 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Panel;
 use Filament\Schemas\Components\Callout;
-use ByJesper\LaravelCustomFieldsFilament\CustomFieldsPlugin;
-use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
-use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
 
 it('registers the definition resource on the Filament panel plugin', function (): void {
     $panel = Panel::make()->id('admin')->path('admin');

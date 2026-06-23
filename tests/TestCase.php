@@ -2,15 +2,15 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Tests;
 
+use ByJesper\LaravelCustomFields\CustomFieldsServiceProvider;
+use ByJesper\LaravelCustomFieldsFilament\CustomFieldsFilamentServiceProvider;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Contact;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Organization;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as Orchestra;
-use ByJesper\LaravelCustomFields\CustomFieldsServiceProvider;
-use ByJesper\LaravelCustomFieldsFilament\CustomFieldsFilamentServiceProvider;
-use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Contact;
-use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Organization;
 
 class TestCase extends Orchestra
 {
@@ -113,6 +113,9 @@ class TestCase extends Orchestra
         Schema::create('cf_filament_organizations', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->string('display_name')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->timestamps();
         });
     }

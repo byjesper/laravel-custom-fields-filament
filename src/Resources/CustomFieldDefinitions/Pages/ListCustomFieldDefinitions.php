@@ -2,9 +2,9 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages;
 
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
 
 class ListCustomFieldDefinitions extends ListRecords
 {

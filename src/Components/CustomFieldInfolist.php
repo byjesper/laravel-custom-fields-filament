@@ -2,13 +2,13 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Components;
 
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldSectionLayout;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Illuminate\Database\Eloquent\Model;
-use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
-use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
-use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldSectionLayout;
 
 class CustomFieldInfolist
 {

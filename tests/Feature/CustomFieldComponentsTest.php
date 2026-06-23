@@ -1,5 +1,14 @@
 <?php
 
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldForm;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldInfolist;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldTableColumn;
+use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldTableFilter;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Contact;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\CustomFieldFormDataHarness;
+use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Organization;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -21,15 +30,6 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
-use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldForm;
-use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldInfolist;
-use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldTableColumn;
-use ByJesper\LaravelCustomFieldsFilament\Components\CustomFieldTableFilter;
-use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldDisplayResolver;
-use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Contact;
-use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\CustomFieldFormDataHarness;
-use ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures\Organization;
 
 beforeEach(function (): void {
     $this->resetSqliteDatabase();
@@ -230,6 +230,30 @@ it('batch resolves relationship labels once for a table page of records', functi
     expect($states)->toBe(['Acme', 'Globex', 'Acme']);
 
     expect($relationshipQueries)->toHaveCount(1);
+});
+
+it('resolves relationship labels when the display field is an accessor over sibling columns', function (): void {
+    // display_name has no stored value; its accessor composes first_name + last_name. pluck()ing the
+    // single column would mutate a partial model and collapse the accessor fallback to an empty string.
+    Organization::query()->create([
+        'id' => '018f11f2-7ad2-72f1-9ea1-1867d37a3001',
+        'name' => 'Acme',
+        'first_name' => 'Manager',
+        'last_name' => 'Person',
+    ]);
+
+    $resolver = app(CustomFieldDisplayResolver::class);
+    $relationship = filamentDefinition('manager', 'relationship', [
+        'target_entity' => 'organization',
+        'display_field' => 'display_name',
+    ]);
+    $record = new Contact([
+        'custom_field_values' => ['manager' => ['value' => '018f11f2-7ad2-72f1-9ea1-1867d37a3001']],
+    ]);
+
+    $resolver->primeRelationshipLabels($relationship, [$record]);
+
+    expect($resolver->formatForTable($relationship, '018f11f2-7ad2-72f1-9ea1-1867d37a3001'))->toBe('Manager Person');
 });
 
 it('builds table columns and filters for active definitions', function (): void {

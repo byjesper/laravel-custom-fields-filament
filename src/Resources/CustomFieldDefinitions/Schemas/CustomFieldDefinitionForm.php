@@ -2,6 +2,8 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas;
 
+use ByJesper\LaravelCustomFields\Services\CustomFieldTypeRegistry;
+use ByJesper\LaravelCustomFieldsFilament\Rules\ConditionalVisibility;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Repeater;
@@ -15,8 +17,6 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rules\Unique;
-use ByJesper\LaravelCustomFields\Services\CustomFieldTypeRegistry;
-use ByJesper\LaravelCustomFieldsFilament\Rules\ConditionalVisibility;
 
 class CustomFieldDefinitionForm
 {

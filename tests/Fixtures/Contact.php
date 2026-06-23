@@ -2,8 +2,8 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Tests\Fixtures;
 
-use Illuminate\Database\Eloquent\Model;
 use ByJesper\LaravelCustomFields\Concerns\HasCustomFields;
+use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model
 {

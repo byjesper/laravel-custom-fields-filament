@@ -2,6 +2,9 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Components;
 
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFields\Support\OptionLabelResolver;
+use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldSectionLayout;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -14,9 +17,6 @@ use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Database\Eloquent\Model;
-use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
-use ByJesper\LaravelCustomFields\Support\OptionLabelResolver;
-use ByJesper\LaravelCustomFieldsFilament\Support\CustomFieldSectionLayout;
 
 class CustomFieldForm
 {

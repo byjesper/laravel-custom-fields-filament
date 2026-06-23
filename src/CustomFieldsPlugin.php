@@ -2,9 +2,9 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament;
 
+use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
-use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\CustomFieldDefinitionResource;
 
 class CustomFieldsPlugin implements Plugin
 {

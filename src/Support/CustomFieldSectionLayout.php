@@ -2,9 +2,9 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Support;
 
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
 use Closure;
 use Filament\Schemas\Components\Section;
-use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
 
 /** @internal */
 final class CustomFieldSectionLayout

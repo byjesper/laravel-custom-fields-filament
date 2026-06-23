@@ -2,11 +2,11 @@
 
 namespace ByJesper\LaravelCustomFieldsFilament\Support;
 
+use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
+use ByJesper\LaravelCustomFields\Support\OptionLabelResolver;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use LogicException;
-use ByJesper\LaravelCustomFields\Models\CustomFieldDefinition;
-use ByJesper\LaravelCustomFields\Support\OptionLabelResolver;
 
 /** @internal */
 final class CustomFieldDisplayResolver
@@ -64,17 +64,23 @@ final class CustomFieldDisplayResolver
             return;
         }
 
-        /** @var Model $model */
-        $model = new $modelClass;
+        // Hydrate full models rather than pluck()ing the single display column: when the display
+        // field is an accessor that derives from other columns (e.g. display_name from first/last
+        // name), pluck() mutates a partial model with only that column loaded and the accessor's
+        // fallback collapses to an empty value. Loading the whole record keeps it a single query
+        // while letting accessors see every attribute they depend on.
         $labels = $modelClass::query()
             ->whereKey(array_values($missingIds))
-            ->pluck($displayField, $model->getKeyName())
+            ->get()
+            ->mapWithKeys(fn (Model $related): array => [
+                (string) $related->getKey() => $related->{$displayField},
+            ])
             ->all();
 
         foreach ($missingIds as $id) {
             $normalizedId = (string) $id;
             $this->primedRelationshipIds[$cacheKey][$normalizedId] = true;
-            $this->relationshipLabels[$cacheKey][$normalizedId] = $labels[$id] ?? $id;
+            $this->relationshipLabels[$cacheKey][$normalizedId] = $labels[$normalizedId] ?? $id;
         }
     }
 

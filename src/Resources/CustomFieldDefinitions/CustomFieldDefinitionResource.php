@@ -3,17 +3,17 @@
 namespace ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions;
 
 use BackedEnum;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use ByJesper\LaravelCustomFields\Services\ContextResolver;
 use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages\CreateCustomFieldDefinition;
 use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages\EditCustomFieldDefinition;
 use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Pages\ListCustomFieldDefinitions;
 use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Schemas\CustomFieldDefinitionForm;
 use ByJesper\LaravelCustomFieldsFilament\Resources\CustomFieldDefinitions\Tables\CustomFieldDefinitionsTable;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class CustomFieldDefinitionResource extends Resource
 {
