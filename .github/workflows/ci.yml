@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Blacksmith runners report RUNNER_ENVIRONMENT=self-hosted, so setup-php
       # installs PHP from ondrej's PPA (~280 packages) instead of the prebuilt
